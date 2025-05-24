@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+from h11 import Data
 
 app=Flask(__name__)
 
@@ -36,6 +37,42 @@ def get_person(id):
         return jsonify(person)
     else:
         return jsonify({"error": "Person not found"}), 404
+    
+@app.route('/api/people', methods=['POST'])
+def add_person():
+    """Agrega una persona"""
+    data = request.get_json()
+    global idEntity
+    new_person = {
+        "id": idEntity,
+        "name": data.get("name"),
+        "lastname": data.get("lastname"),
+        "age": data.get("age")
+    }
+    people.append(new_person)
+    idEntity += 1
+    return jsonify(new_person), 201
+
+@app.route('/api/people/<int:id>', methods=['PUT'])
+def update_person(id):
+    """Actualiza una persona por id"""
+    data = request.get_json()
+    person = next((p for p in people if p['id'] == id), None)
+    if person:
+        person['name'] = data.get("name", person['name'])
+        person['lastname'] = data.get("lastname", person['lastname'])
+        person['age'] = data.get("age", person['age'])
+        return jsonify(person)
+    else:
+        return jsonify({"error": "Person not found"}), 404
+
+
+@app.route('/api/people/<int:id>', methods=['DELETE'])
+def delete_person(id):
+    """Elimina una persona por id"""
+    global people
+    people = [p for p in people if p['id'] != id]
+    return jsonify({"message": "Person deleted"}), 200
 
 if __name__=='__main__':
     app.run(host='0.0.0.0')

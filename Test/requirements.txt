@@ -1,0 +1,10 @@
+selenium
+robotframework
+robotframework-seleniumlibrary
+requests
+robotframework-requests
+robotframework-jsonlibrary
+robotframework-databaselibrary
+jsonpath_rw
+jsonpath_rw_ext
+pymssql

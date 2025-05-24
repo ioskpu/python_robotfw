@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.3 on linux)" generated="2025-05-24T09:50:13.453122" rpa="false" schemaversion="5">
+<suite id="s1" name="Test" source="/home/ioskpu/Documentos/proyectos/python/python_robotfw/Test/test.robot">
+<test id="s1-t1" name="Get Person" line="33">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-05-24T09:50:14.356610" level="INFO">Creating Session using : alias=mysession, url=http://127.0.0.1:5000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>mysession</arg>
+<arg>${baseUrl}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-05-24T09:50:14.354938" elapsed="0.006074"/>
+</kw>
+<kw name="Get last person">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-05-24T09:50:14.366940" level="INFO">Creating Session using : alias=mysession, url=http://127.0.0.1:5000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>mysession</arg>
+<arg>${baseUrl}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-05-24T09:50:14.365401" elapsed="0.003350"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2025-05-24T09:50:14.393497" level="INFO">GET Request : url=http://127.0.0.1:5000/api/people 
+ path_url=/api/people 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2025-05-24T09:50:14.394386" level="INFO">GET Response : url=http://127.0.0.1:5000/api/people 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.3 Python/3.13.3', 'Date': 'Sat, 24 May 2025 14:50:14 GMT', 'Content-Type': 'application/json', 'Content-Length': '166', 'Connection': 'close'} 
+ body=[{"age":30,"id":1,"lastname":"P\u00e9rez","name":"Juan"},{"age":25,"id":2,"lastname":"G\u00f3mez","name":"Pedro"},{"age":"30","id":2,"lastname":"Doe","name":"John"}]
+ 
+ </msg>
+<msg time="2025-05-24T09:50:14.396982" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>${endpoint_peoplelist}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-05-24T09:50:14.369600" elapsed="0.030163"/>
+</kw>
+<kw name="Get Length" owner="BuiltIn">
+<msg time="2025-05-24T09:50:14.404412" level="INFO">Length is 3.</msg>
+<msg time="2025-05-24T09:50:14.405061" level="INFO">${length} = 3</msg>
+<var>${length}</var>
+<arg>${response.json()}</arg>
+<doc>Returns and logs the length of the given item as an integer.</doc>
+<status status="PASS" start="2025-05-24T09:50:14.401915" elapsed="0.003576"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-05-24T09:50:14.411491" level="INFO">${last_person} = 2</msg>
+<var>${last_person}</var>
+<arg>${response.json()}[${length-1}][id]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-05-24T09:50:14.406294" elapsed="0.005669"/>
+</kw>
+<kw name="Return From Keyword" owner="BuiltIn">
+<msg time="2025-05-24T09:50:14.418199" level="INFO">Returning from the enclosing user keyword.</msg>
+<arg>${last_person}</arg>
+<doc>Returns from the enclosing user keyword.</doc>
+<status status="PASS" start="2025-05-24T09:50:14.417572" elapsed="0.001157"/>
+</kw>
+<msg time="2025-05-24T09:50:14.421393" level="INFO">${last_person} = 2</msg>
+<var>${last_person}</var>
+<status status="PASS" start="2025-05-24T09:50:14.363921" elapsed="0.057897"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2025-05-24T09:50:14.432336" level="INFO">GET Request : url=http://127.0.0.1:5000/api/people/2 
+ path_url=/api/people/2 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2025-05-24T09:50:14.432966" level="INFO">GET Response : url=http://127.0.0.1:5000/api/people/2 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.3 Python/3.13.3', 'Date': 'Sat, 24 May 2025 14:50:14 GMT', 'Content-Type': 'application/json', 'Content-Length': '57', 'Connection': 'close'} 
+ body={"age":25,"id":2,"lastname":"G\u00f3mez","name":"Pedro"}
+ 
+ </msg>
+<msg time="2025-05-24T09:50:14.433621" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>${endpoint_peoplelist}/${last_person}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-05-24T09:50:14.423551" elapsed="0.010419"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>Ok</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2025-05-24T09:50:14.435729" elapsed="0.001198"/>
+</kw>
+<kw name="To Json" owner="RequestsLibrary">
+<msg time="2025-05-24T09:50:14.438699" level="WARN">Keyword 'RequestsLibrary.To Json' is deprecated. Please use ${resp.json()} instead. Have a look at the improved HTML output as pretty printing replacement.</msg>
+<msg time="2025-05-24T09:50:14.441806" level="INFO">To JSON using : content={"age":25,"id":2,"lastname":"G\u00f3mez","name":"Pedro"}
+ </msg>
+<msg time="2025-05-24T09:50:14.442294" level="INFO">To JSON using : pretty_print=False </msg>
+<msg time="2025-05-24T09:50:14.442857" level="INFO">${json_response} = {'age': 25, 'id': 2, 'lastname': 'Gómez', 'name': 'Pedro'}</msg>
+<var>${json_response}</var>
+<arg>${response.content}</arg>
+<doc>*DEPRECATED* Please use ${resp.json()} instead. Have a look at the improved HTML output as pretty printing replacement.</doc>
+<status status="PASS" start="2025-05-24T09:50:14.438224" elapsed="0.005022"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2025-05-24T09:50:14.445067" level="INFO">${person_id} = 2</msg>
+<var>${person_id}</var>
+<arg>${json_response}</arg>
+<arg>id</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2025-05-24T09:50:14.444051" elapsed="0.001484"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${person_id}</arg>
+<arg>${last_person}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2025-05-24T09:50:14.447895" elapsed="0.001110"/>
+</kw>
+<status status="PASS" start="2025-05-24T09:50:14.347239" elapsed="0.103017"/>
+</test>
+<status status="PASS" start="2025-05-24T09:50:13.461557" elapsed="0.990511"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Test" id="s1" pass="1" fail="0" skip="0">Test</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2025-05-24T09:50:14.438699" level="WARN">Keyword 'RequestsLibrary.To Json' is deprecated. Please use ${resp.json()} instead. Have a look at the improved HTML output as pretty printing replacement.</msg>
+</errors>
+</robot>
